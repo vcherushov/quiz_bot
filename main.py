@@ -53,7 +53,7 @@ def timeout(user_id, question_index):
     # Время ожидания для каждого из вопросов
     wait_time =[30, 15, 15, 15, 15, 15, 15]
     time.sleep(wait_time[question_index])
-    
+
     if len(user_answers[user_id]) == question_index:
         user_answers[user_id].append(False)
         bot.send_message(chat_id=user_id, text="Время вышло.")
@@ -124,7 +124,7 @@ def handle_answer(message):
         if total_correct_answers == len(questions):
             bot.send_message(chat_id=user_id, text="Поздравляю! Вы правильно ответили на все вопросы.")
         else:
-            bot.send_message(chat_id=user_id, text=f"Вы ответили правильно на {total_correct_answers} из {len(questions)} вопросов.")
+            bot.send_message(chat_id=user_id, text=f"Вы ответили правильно на {total_correct_answers} из {len(questions)} вопросов. Попробуйте еще раз.")
         
         remove_keyboard = types.ReplyKeyboardRemove()
         bot.send_message(chat_id=user_id, text="Конец опроса.", reply_markup=remove_keyboard)
@@ -153,10 +153,17 @@ def add_winners_to_database(user_name):
     connection = sqlite3.connect('quiz.db')
     cursor = connection.cursor()
 
-    # добавляем пользователя в таблицу
-    cursor.execute("INSERT INTO winners (username) VALUES (?)", (user_name,))
-    connection.commit()
-    
+    # проверяем, есть ли пользователь уже в таблице
+    cursor.execute("SELECT * FROM winners WHERE username=?", (user_name,))
+    user_exists = cursor.fetchone()
+
+    if user_exists:
+        print("User is already in the table.")
+    else:
+        cursor.execute("INSERT INTO winners (username) VALUES (?)", (user_name,))
+        connection.commit()
+        print("User has been added to the table.")
+
     connection.close()
 
 
