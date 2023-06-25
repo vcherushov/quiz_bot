@@ -3,7 +3,6 @@ from telebot import types
 import threading
 import time
 
-import json
 import sqlite3
 
 TOKEN = '5849486081:AAHE9dzcXmE_7EgZOhTFAxun0CFdGgkHHh8'
