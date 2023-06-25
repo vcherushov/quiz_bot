@@ -58,9 +58,6 @@ def timeout(user_id, question_index):
         user_answers[user_id].append(False)
         bot.send_message(chat_id=user_id, text="Время вышло.")
 
-def reset_quiz():
-    user_answers = {}
-    correct_count = 0
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
