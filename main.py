@@ -3,6 +3,7 @@ from telebot import types
 import threading
 import time
 
+import json
 import sqlite3
 
 TOKEN = '5849486081:AAHE9dzcXmE_7EgZOhTFAxun0CFdGgkHHh8'
@@ -124,10 +125,10 @@ def handle_answer(message):
         if total_correct_answers == len(questions):
             bot.send_message(chat_id=user_id, text="Поздравляю! Вы правильно ответили на все вопросы.")
         else:
-            bot.send_message(chat_id=user_id, text=f"Вы ответили правильно на {total_correct_answers} из {len(questions)} вопросов. Попробуйте еще раз.")
+            bot.send_message(chat_id=user_id, text=f"Вы ответили правильно на {total_correct_answers} из {len(questions)} вопросов.")
         
         remove_keyboard = types.ReplyKeyboardRemove()
-        bot.send_message(chat_id=user_id, text="Конец опроса.", reply_markup=remove_keyboard)
+        bot.send_message(chat_id=user_id, text="Можете пройти опрос еще раз. Для этого введите /restart", reply_markup=remove_keyboard)
 
         user_name = message.from_user.username
         add_winners_to_database(user_name)
